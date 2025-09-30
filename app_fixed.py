@@ -1,6 +1,18 @@
 from fastapi import FastAPI, Request, HTTPException, status
 from fastapi.responses import PlainTextResponse, JSONResponse
-from pydantic import BaseModel, BaseSettings, ValidationError
+
+from pydantic import BaseModel, ValidationError
+try:
+    from pydantic_settings import BaseSettings
+except Exception:
+    try:
+        from pydantic import BaseSettings
+    except Exception as e:
+        raise RuntimeError(
+            "BaseSettings import failed. Please install pydantic-settings "
+            "(pip install pydantic-settings) or use pydantic<2."
+        ) from e
+
 from dotenv import load_dotenv
 import logging
 import os
